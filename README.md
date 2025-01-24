@@ -1,5 +1,7 @@
 # API Design Study Repository 🚀
 
+![api-design](https://github.com/JawherKl/api-design/blob/main/docs/images/api-design.gif)
+
 Welcome to the **API Design Study Repository**! This project is a hands-on exploration of API design patterns, covering **REST API**, **GraphQL**, and **gRPC** implementations across four popular frameworks: **Node.js**, **Golang**, **Symfony**, and **Spring Boot**. 
 
 ---
