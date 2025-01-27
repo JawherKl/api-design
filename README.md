@@ -233,9 +233,9 @@ Ensure you have the following installed:
 - [REST API Design](docs/REST-API.md)
 - [GraphQL API Design](docs/GraphQL.md)
 - [gRPC API Design](docs/gRPC.md)
-- [SOAP API Design](docs/soap.md)
-- [webhook API Design](docs/webhook.md)
-- [websocket API Design](docs/websocket.md)
+- [SOAP API Design](docs/SOAP.md)
+- [webhook API Design](docs/Webhook.md)
+- [websocket API Design](docs/Websocket.md)
 - [Framework Comparisons](docs/framework-comparisons.md)
 
 ---
