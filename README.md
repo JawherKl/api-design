@@ -184,7 +184,7 @@ api-design-study/
 - **GraphQL**: Efficient data retrieval with GraphQL schemas, resolvers, and queries.
 - **gRPC**: Implementation of Protobuf-based gRPC server-client communication.
 - **Webhook**: Automated HTTP callbacks for real-time event notifications.
-- **WebSocket**: Full-duplex communication channels over a single TCP connection.
+- **WebSocket**: Full-duplex communication channels for real-time data exchange over a single TCP connection.
 
 ---
 
