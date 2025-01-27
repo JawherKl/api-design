@@ -2,7 +2,7 @@
 
 ![api-design](https://github.com/JawherKl/api-design/blob/main/docs/images/api-design.gif)
 
-Welcome to the **API Design Study Repository**! This project is a hands-on exploration of API design patterns, covering **REST API**, **GraphQL**, **gRPC**, **soap**, **webhook** and **websocket** implementations across four popular frameworks: **Node.js**, **Golang**, **Symfony**, and **Spring Boot**. 
+Welcome to the **API Design Study Repository**! This project is a hands-on exploration of API design patterns, covering **REST API**, **GraphQL**, **gRPC**, **SOAP**, **Webhook** and **Websocket** implementations across four popular frameworks: **Node.js**, **Golang**, **Symfony**, and **Spring Boot**. 
 
 ---
 
@@ -183,6 +183,8 @@ api-design-study/
 - **REST API**: Comprehensive study of HTTP methods, request/response handling, and best practices.
 - **GraphQL**: Efficient data retrieval with GraphQL schemas, resolvers, and queries.
 - **gRPC**: Implementation of Protobuf-based gRPC server-client communication.
+- **Webhook**: Automated HTTP callbacks for real-time event notifications.
+- **WebSocket**: Full-duplex communication channels over a single TCP conn
 
 ---
 
@@ -231,6 +233,9 @@ Ensure you have the following installed:
 - [REST API Design](docs/REST-API.md)
 - [GraphQL API Design](docs/GraphQL.md)
 - [gRPC API Design](docs/gRPC.md)
+- [SOAP API Design](docs/soap.md)
+- [webhook API Design](docs/webhook.md)
+- [websocket API Design](docs/websocket.md)
 - [Framework Comparisons](docs/framework-comparisons.md)
 
 ---
