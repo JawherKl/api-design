@@ -2,7 +2,7 @@
 
 ![api-design](https://github.com/JawherKl/api-design/blob/main/docs/images/api-design.gif)
 
-Welcome to the **API Design Study Repository**! This project is a hands-on exploration of API design patterns, covering **REST API**, **GraphQL**, and **gRPC** implementations across four popular frameworks: **Node.js**, **Golang**, **Symfony**, and **Spring Boot**. 
+Welcome to the **API Design Study Repository**! This project is a hands-on exploration of API design patterns, covering **REST API**, **GraphQL**, **gRPC**, **soap**, **webhook** and **websocket** implementations across four popular frameworks: **Node.js**, **Golang**, **Symfony**, and **Spring Boot**. 
 
 ---
 
@@ -11,32 +11,6 @@ Welcome to the **API Design Study Repository**! This project is a hands-on explo
 ```
 api-design-study/
 ├── README.md
-├── rest-api/
-│   ├── nodejs/
-│   │   ├── package.json
-│   │   ├── src/
-│   │   │   ├── controllers/
-│   │   │   ├── routes/
-│   │   │   └── app.js
-│   ├── golang/
-│   │   ├── go.mod
-│   │   ├── main.go
-│   │   ├── handlers/
-│   │   └── routes/
-│   ├── symfony/
-│   │   ├── composer.json
-│   │   └── src/
-│   │       ├── Controller/
-│   │       ├── Entity/
-│   │       └── config/
-│   └── spring-boot/
-│       ├── pom.xml
-│       └── src/
-│           ├── main/
-│           │   ├── java/
-│           │   │   ├── controllers/
-│           │   │   ├── services/
-│           │   │   └── Application.java
 ├── graphql/
 │   ├── nodejs/
 │   │   ├── package.json
@@ -88,10 +62,117 @@ api-design-study/
 │           │   │   ├── grpc/
 │           │   │   ├── server/
 │           │   │   └── client/
+├── rest-api/
+│   ├── nodejs/
+│   │   ├── package.json
+│   │   ├── src/
+│   │   │   ├── controllers/
+│   │   │   ├── routes/
+│   │   │   └── app.js
+│   ├── golang/
+│   │   ├── go.mod
+│   │   ├── main.go
+│   │   ├── handlers/
+│   │   └── routes/
+│   ├── symfony/
+│   │   ├── composer.json
+│   │   └── src/
+│   │       ├── Controller/
+│   │       ├── Entity/
+│   │       └── config/
+│   └── spring-boot/
+│       ├── pom.xml
+│       └── src/
+│           ├── main/
+│           │   ├── java/
+│           │   │   ├── controllers/
+│           │   │   ├── services/
+│           │   │   └── Application.java
+├── soap/
+│   ├── nodejs/
+│   │   ├── package.json
+│   │   ├── src/
+│   │   │   ├── controllers/
+│   │   │   ├── routes/
+│   │   │   └── app.js
+│   ├── golang/
+│   │   ├── go.mod
+│   │   ├── main.go
+│   │   ├── handlers/
+│   │   └── routes/
+│   ├── symfony/
+│   │   ├── composer.json
+│   │   └── src/
+│   │       ├── Controller/
+│   │       ├── Entity/
+│   │       └── config/
+│   └── spring-boot/
+│       ├── pom.xml
+│       └── src/
+│           ├── main/
+│           │   ├── java/
+│           │   │   ├── controllers/
+│           │   │   ├── services/
+│           │   │   └── Application.java
+├── webhook/
+│   ├── nodejs/
+│   │   ├── package.json
+│   │   ├── src/
+│   │   │   ├── controllers/
+│   │   │   ├── routes/
+│   │   │   └── app.js
+│   ├── golang/
+│   │   ├── go.mod
+│   │   ├── main.go
+│   │   ├── handlers/
+│   │   └── routes/
+│   ├── symfony/
+│   │   ├── composer.json
+│   │   └── src/
+│   │       ├── Controller/
+│   │       ├── Entity/
+│   │       └── config/
+│   └── spring-boot/
+│       ├── pom.xml
+│       └── src/
+│           ├── main/
+│           │   ├── java/
+│           │   │   ├── controllers/
+│           │   │   ├── services/
+│           │   │   └── Application.java
+├── websocket/
+│   ├── nodejs/
+│   │   ├── package.json
+│   │   ├── src/
+│   │   │   ├── controllers/
+│   │   │   ├── routes/
+│   │   │   └── app.js
+│   ├── golang/
+│   │   ├── go.mod
+│   │   ├── main.go
+│   │   ├── handlers/
+│   │   └── routes/
+│   ├── symfony/
+│   │   ├── composer.json
+│   │   └── src/
+│   │       ├── Controller/
+│   │       ├── Entity/
+│   │       └── config/
+│   └── spring-boot/
+│       ├── pom.xml
+│       └── src/
+│           ├── main/
+│           │   ├── java/
+│           │   │   ├── controllers/
+│           │   │   ├── services/
+│           │   │   └── Application.java
 └── docs/
     ├── REST-API.md
     ├── GraphQL.md
     ├── gRPC.md
+    ├── soap.md
+    ├── webhook.md
+    ├── websocket.md
     └── framework-comparisons.md
 ```
 
