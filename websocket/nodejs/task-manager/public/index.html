@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real-Time Task Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    .task-container {
+      display: flex;
+      gap: 20px;
+    }
+    .task-list {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      width: 45%;
+    }
+    .task-list h2 {
+      margin-top: 0;
+    }
+    .task-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      transition: all 0.3s ease;
+    }
+    .task-item:last-child {
+      border-bottom: none;
+    }
+    .task-item.completed {
+      text-decoration: line-through;
+      color: #888;
+    }
+    .task-item:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .task-actions button {
+      margin-left: 10px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .task-actions button.complete {
+      background-color: #28a745;
+      color: #fff;
+    }
+    .task-actions button.delete {
+      background-color: #dc3545;
+      color: #fff;
+    }
+    .filters {
+      margin-bottom: 20px;
+    }
+    .filters button {
+      padding: 10px 20px;
+      margin-right: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background-color: #007bff;
+      color: #fff;
+    }
+    .filters button.active {
+      background-color: #0056b3;
+    }
+    .task-count {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>Real-Time Task Manager</h1>
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">All Tasks</button>
+    <button class="filter-btn" data-filter="pending">Pending Tasks</button>
+    <button class="filter-btn" data-filter="completed">Completed Tasks</button>
+  </div>
+  <div class="task-container">
+    <div class="task-list">
+      <h2>Tasks</h2>
+      <div id="tasks"></div>
+    </div>
+  </div>
+  <div class="task-count">
+    <p>Total Tasks: <span id="total-tasks">0</span></p>
+    <p>Pending Tasks: <span id="pending-tasks">0</span></p>
+    <p>Completed Tasks: <span id="completed-tasks">0</span></p>
+  </div>
+  <form id="taskForm">
+    <input type="text" id="taskInput" placeholder="Enter a task" required />
+    <button type="submit">Add Task</button>
+  </form>
+
+  <script>
+    const ws = new WebSocket('ws://localhost:3000');
+    const tasksDiv = document.getElementById('tasks');
+    const totalTasksSpan = document.getElementById('total-tasks');
+    const pendingTasksSpan = document.getElementById('pending-tasks');
+    const completedTasksSpan = document.getElementById('completed-tasks');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+
+    let tasks = [];
+
+    // Render tasks based on filter
+    const renderTasks = (filter = 'all') => {
+      tasksDiv.innerHTML = '';
+      const filteredTasks = filter === 'all' ? tasks : tasks.filter(task => filter === 'pending' ? !task.completed : task.completed);
+      filteredTasks.forEach((task) => {
+        const taskDiv = document.createElement('div');
+        taskDiv.className = `task-item ${task.completed ? 'completed' : ''}`;
+        taskDiv.innerHTML = `
+          <span>${task.title}</span>
+          <div class="task-actions">
+            <button class="complete" data-id="${task._id}">${task.completed ? 'Undo' : 'Complete'}</button>
+            <button class="delete" data-id="${task._id}">Delete</button>
+          </div>
+        `;
+        tasksDiv.appendChild(taskDiv);
+      });
+      updateTaskCount();
+    };
+
+    // Update task count
+    const updateTaskCount = () => {
+      const totalTasks = tasks.length;
+      const pendingTasks = tasks.filter(task => !task.completed).length;
+      const completedTasks = tasks.filter(task => task.completed).length;
+      totalTasksSpan.textContent = totalTasks;
+      pendingTasksSpan.textContent = pendingTasks;
+      completedTasksSpan.textContent = completedTasks;
+    };
+
+    // Handle WebSocket messages
+    ws.onmessage = (event) => {
+      const { type, data } = JSON.parse(event.data);
+
+      switch (type) {
+        case 'INITIAL_TASKS':
+          tasks = data;
+          renderTasks();
+          break;
+
+        case 'TASK_CREATED':
+          tasks.push(data);
+          renderTasks();
+          break;
+
+        case 'TASK_UPDATED':
+          tasks = tasks.map(task => task._id === data._id ? data : task);
+          renderTasks();
+          break;
+
+        case 'TASK_DELETED':
+          tasks = tasks.filter(task => task._id !== data.id);
+          renderTasks();
+          break;
+      }
+    };
+
+    // Handle task form submission
+    document.getElementById('taskForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const taskInput = document.getElementById('taskInput');
+      const task = { title: taskInput.value };
+      ws.send(JSON.stringify({ type: 'CREATE_TASK', data: task }));
+      taskInput.value = '';
+    });
+
+    // Handle task actions (complete/delete)
+    tasksDiv.addEventListener('click', (e) => {
+      if (e.target.classList.contains('complete')) {
+        const taskId = e.target.getAttribute('data-id');
+        const task = tasks.find(task => task._id === taskId);
+        ws.send(JSON.stringify({ type: 'UPDATE_TASK', data: { id: taskId, completed: !task.completed } }));
+      }
+
+      if (e.target.classList.contains('delete')) {
+        const taskId = e.target.getAttribute('data-id');
+        ws.send(JSON.stringify({ type: 'DELETE_TASK', data: { id: taskId } }));
+      }
+    });
+
+    // Handle filter buttons
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        renderTasks(button.getAttribute('data-filter'));
+      });
+    });
+  </script>
+</body>
+</html>
