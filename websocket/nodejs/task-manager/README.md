@@ -29,8 +29,8 @@ A real-time task management application built with Node.js, Express, WebSocket, 
 3. Set up environment variables:
    Create a `.env` file and add the following:
    ```
-   MONGO_URI=mongodb://localhost:27017/taskmanager
-   REDIS_URI=redis://localhost:6379
+   MONGO_URI=mongodb://ip-address:27017/taskmanager
+   REDIS_URI=redis://ip-address:6379
    PORT=3000
    ```
 
