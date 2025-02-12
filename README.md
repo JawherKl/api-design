@@ -1,5 +1,11 @@
 # API Design Study Repository 🚀
 
+![Repository Size](https://img.shields.io/github/repo-size/JawherKl/api-design)
+![Last Commit](https://img.shields.io/github/last-commit/JawherKl/api-design)
+![Issues](https://img.shields.io/github/issues-raw/JawherKl/api-design)
+![Forks](https://img.shields.io/github/forks/JawherKl/api-design)
+![Stars](https://img.shields.io/github/stars/JawherKl/api-design)
+
 ![api-design](https://github.com/JawherKl/api-design/blob/main/docs/images/api-design.gif)
 
 Welcome to the **API Design Study Repository**! This project is a hands-on exploration of API design patterns, covering **REST API**, **GraphQL**, **gRPC**, **SOAP**, **Webhook** and **Websocket** implementations across four popular frameworks: **Node.js**, **Golang**, **Symfony**, and **Spring Boot**. 
