@@ -16,45 +16,46 @@ Welcome to the **API Design Study Repository**! This project is a hands-on explo
 
 ```
 api-design-study/
-├── README.md
+│── docs/
+│   ├── images/
+│   |── framework-comparison.md
+│   ├── GraphQL.md
+│   ├── gRPC.md
+│   ├── REST-API.md
+|   ├── SOAP.md
+│   ├── Webhook.md
+│   └── Websocket.md
 ├── graphql/
-│   ├── nodejs/
 │   ├── golang/
-│   ├── symfony/
-│   └── spring-boot/
+│   ├── nodejs/
+│   |── spring-boot/
+│   └── symfony/
 ├── grpc/
-│   ├── nodejs/
 │   ├── golang/
-│   ├── symfony/
-│   └── spring-boot/
+│   ├── nodejs/
+│   |── spring-boot/
+│   └── symfony/
 ├── rest-api/
-│   ├── nodejs/
 │   ├── golang/
-│   ├── symfony/
-│   └── spring-boot/
+│   ├── nodejs/
+│   |── spring-boot/
+│   └── symfony/
 ├── soap/
-│   ├── nodejs/
 │   ├── golang/
-│   ├── symfony/
-│   └── spring-boot/
+│   ├── nodejs/
+│   |── spring-boot/
+│   └── symfony/
 ├── webhook/
-│   ├── nodejs/
 │   ├── golang/
-│   ├── symfony/
-│   └── spring-boot/
+│   ├── nodejs/
+│   |── spring-boot/
+│   └── symfony/
 ├── websocket/
-│   ├── nodejs/
 │   ├── golang/
-│   ├── symfony/
-│   └── spring-boot/
-└── docs/
-    ├── REST-API.md
-    ├── GraphQL.md
-    ├── gRPC.md
-    ├── soap.md
-    ├── webhook.md
-    ├── websocket.md
-    └── framework-comparisons.md
+│   ├── nodejs/
+│   |── spring-boot/
+│   └── symfony/
+└── README.md
 ```
 
 ---
