@@ -19,159 +19,34 @@ api-design-study/
 ├── README.md
 ├── graphql/
 │   ├── nodejs/
-│   │   ├── package.json
-│   │   ├── src/
-│   │   │   ├── resolvers/
-│   │   │   └── schema/
-│   │   └── app.js
 │   ├── golang/
-│   │   ├── go.mod
-│   │   ├── main.go
-│   │   ├── resolvers/
-│   │   └── schema/
 │   ├── symfony/
-│   │   ├── composer.json
-│   │   └── src/
-│   │       ├── GraphQL/
-│   │       ├── Entity/
-│   │       └── config/
 │   └── spring-boot/
-│       ├── pom.xml
-│       └── src/
-│           ├── main/
-│           │   ├── java/
-│           │   │   ├── resolvers/
-│           │   │   └── schema/
 ├── grpc/
 │   ├── nodejs/
-│   │   ├── package.json
-│   │   ├── src/
-│   │   │   ├── proto/
-│   │   │   ├── server.js
-│   │   │   └── client.js
 │   ├── golang/
-│   │   ├── go.mod
-│   │   ├── proto/
-│   │   ├── server/
-│   │   └── client/
 │   ├── symfony/
-│   │   ├── composer.json
-│   │   └── src/
-│   │       ├── GRPC/
-│   │       ├── Entity/
-│   │       └── config/
 │   └── spring-boot/
-│       ├── pom.xml
-│       └── src/
-│           ├── main/
-│           │   ├── java/
-│           │   │   ├── grpc/
-│           │   │   ├── server/
-│           │   │   └── client/
 ├── rest-api/
 │   ├── nodejs/
-│   │   ├── package.json
-│   │   ├── src/
-│   │   │   ├── controllers/
-│   │   │   ├── routes/
-│   │   │   └── app.js
 │   ├── golang/
-│   │   ├── go.mod
-│   │   ├── main.go
-│   │   ├── handlers/
-│   │   └── routes/
 │   ├── symfony/
-│   │   ├── composer.json
-│   │   └── src/
-│   │       ├── Controller/
-│   │       ├── Entity/
-│   │       └── config/
 │   └── spring-boot/
-│       ├── pom.xml
-│       └── src/
-│           ├── main/
-│           │   ├── java/
-│           │   │   ├── controllers/
-│           │   │   ├── services/
-│           │   │   └── Application.java
 ├── soap/
 │   ├── nodejs/
-│   │   ├── package.json
-│   │   ├── src/
-│   │   │   ├── controllers/
-│   │   │   ├── routes/
-│   │   │   └── app.js
 │   ├── golang/
-│   │   ├── go.mod
-│   │   ├── main.go
-│   │   ├── handlers/
-│   │   └── routes/
 │   ├── symfony/
-│   │   ├── composer.json
-│   │   └── src/
-│   │       ├── Controller/
-│   │       ├── Entity/
-│   │       └── config/
 │   └── spring-boot/
-│       ├── pom.xml
-│       └── src/
-│           ├── main/
-│           │   ├── java/
-│           │   │   ├── controllers/
-│           │   │   ├── services/
-│           │   │   └── Application.java
 ├── webhook/
 │   ├── nodejs/
-│   │   ├── package.json
-│   │   ├── src/
-│   │   │   ├── controllers/
-│   │   │   ├── routes/
-│   │   │   └── app.js
 │   ├── golang/
-│   │   ├── go.mod
-│   │   ├── main.go
-│   │   ├── handlers/
-│   │   └── routes/
 │   ├── symfony/
-│   │   ├── composer.json
-│   │   └── src/
-│   │       ├── Controller/
-│   │       ├── Entity/
-│   │       └── config/
 │   └── spring-boot/
-│       ├── pom.xml
-│       └── src/
-│           ├── main/
-│           │   ├── java/
-│           │   │   ├── controllers/
-│           │   │   ├── services/
-│           │   │   └── Application.java
 ├── websocket/
 │   ├── nodejs/
-│   │   ├── package.json
-│   │   ├── src/
-│   │   │   ├── controllers/
-│   │   │   ├── routes/
-│   │   │   └── app.js
 │   ├── golang/
-│   │   ├── go.mod
-│   │   ├── main.go
-│   │   ├── handlers/
-│   │   └── routes/
 │   ├── symfony/
-│   │   ├── composer.json
-│   │   └── src/
-│   │       ├── Controller/
-│   │       ├── Entity/
-│   │       └── config/
 │   └── spring-boot/
-│       ├── pom.xml
-│       └── src/
-│           ├── main/
-│           │   ├── java/
-│           │   │   ├── controllers/
-│           │   │   ├── services/
-│           │   │   └── Application.java
 └── docs/
     ├── REST-API.md
     ├── GraphQL.md
