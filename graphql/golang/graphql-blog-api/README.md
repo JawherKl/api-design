@@ -135,6 +135,39 @@ query {
 }
 ```
 
+### **3 Update an Existing Post**
+#### **Mutation**
+```graphql
+mutation {
+  updatePost(input: { id: "your-post-id-here", title: "Updated Title", content: "Updated Content", author: "John Doe" }) {
+    id
+    title
+    content
+    author
+  }
+}
+```
+
+### **4 Delete a Post**
+#### **Mutation**
+```graphql
+mutation {
+  deletePost(id: "your-post-id-here")
+}
+```
+
+### **5 Fetch a Single Post by ID**
+#### **Mutation**
+```graphql
+query {
+  post(id: "your-post-id-here") {
+    id
+    title
+    content
+    author
+  }
+}
+```
 ---
 
 ## 📌 Next Steps
