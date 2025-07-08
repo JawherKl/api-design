@@ -6,6 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/JawherKl/project-management/internal/models"
 	"github.com/JawherKl/project-management/internal/services"
+	"github.com/JawherKl/project-management/internal/validators"
 )
 
 func CreateTask(c *fiber.Ctx) error {
@@ -20,6 +21,10 @@ func CreateTask(c *fiber.Ctx) error {
 	}
 
 	task.ProjectID = uint(projectID)
+
+	if errs := validators.ValidateStruct(&task); errs != nil {
+		return c.Status(400).JSON(fiber.Map{"validation_errors": errs})
+	}
 
 	if err := services.CreateTask(&task); err != nil {
 		return c.Status(500).JSON(fiber.Map{"error": "Could not create task"})
