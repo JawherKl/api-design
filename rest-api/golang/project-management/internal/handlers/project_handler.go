@@ -8,6 +8,12 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// @Summary      Get all projects
+// @Description  Retrieves a list of all projects
+// @Tags         projects
+// @Produce      json
+// @Success      200  {array}  models.Project
+// @Router       /projects [get]
 func GetProjects(c *fiber.Ctx) error {
 	projects, err := services.GetProjects()
 	if err != nil {
@@ -16,6 +22,14 @@ func GetProjects(c *fiber.Ctx) error {
 	return c.JSON(projects)
 }
 
+// @Summary      Create a new project
+// @Description  Create a project with name and description
+// @Tags         projects
+// @Accept       json
+// @Produce      json
+// @Param        project  body  models.Project  true  "Project JSON"
+// @Success      201  {object}  models.Project
+// @Router       /projects [post]
 func CreateProject(c *fiber.Ctx) error {
 	var project models.Project
 	if err := c.BodyParser(&project); err != nil {

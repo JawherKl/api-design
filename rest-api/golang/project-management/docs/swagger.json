@@ -1,0 +1,182 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a simple API to manage projects and tasks.",
+        "title": "Project Management API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/api",
+    "paths": {
+        "/projects": {
+            "get": {
+                "description": "Retrieves a list of all projects",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "projects"
+                ],
+                "summary": "Get all projects",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Project"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a project with name and description",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "projects"
+                ],
+                "summary": "Create a new project",
+                "parameters": [
+                    {
+                        "description": "Project JSON",
+                        "name": "project",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Project"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Project"
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/{id}/tasks": {
+            "get": {
+                "description": "Retrieves a list of all tasks for a specific project",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tasks"
+                ],
+                "summary": "Get all tasks by project",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Task"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a task with name and description",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tasks"
+                ],
+                "summary": "Create a new task",
+                "parameters": [
+                    {
+                        "description": "Task JSON",
+                        "name": "task",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Task"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Task"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Project": {
+            "type": "object",
+            "required": [
+                "description",
+                "name"
+            ],
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string",
+                    "minLength": 3
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Task": {
+            "type": "object",
+            "required": [
+                "status",
+                "title"
+            ],
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "project_id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "todo",
+                        "in_progress",
+                        "done"
+                    ]
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
