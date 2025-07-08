@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+    container_name: go-api
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    restart: always   # 🔁 Auto-restart if crashed or after reboot
+
+  db:
+    image: postgres:15
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: projectdb
+    ports:
+      - "5060:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data   # 💾 Persistent storage
+    restart: always   # 🔁 Auto-restart
+
+volumes:
+  pgdata:
