@@ -1,0 +1,121 @@
+basePath: /api
+definitions:
+  models.Project:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        minLength: 3
+        type: string
+      updated_at:
+        type: string
+    required:
+    - description
+    - name
+    type: object
+  models.Task:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      project_id:
+        type: integer
+      status:
+        enum:
+        - todo
+        - in_progress
+        - done
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+    required:
+    - status
+    - title
+    type: object
+host: localhost:3000
+info:
+  contact: {}
+  description: This is a simple API to manage projects and tasks.
+  title: Project Management API
+  version: "1.0"
+paths:
+  /projects:
+    get:
+      description: Retrieves a list of all projects
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Project'
+            type: array
+      summary: Get all projects
+      tags:
+      - projects
+    post:
+      consumes:
+      - application/json
+      description: Create a project with name and description
+      parameters:
+      - description: Project JSON
+        in: body
+        name: project
+        required: true
+        schema:
+          $ref: '#/definitions/models.Project'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Project'
+      summary: Create a new project
+      tags:
+      - projects
+  /projects/{id}/tasks:
+    get:
+      description: Retrieves a list of all tasks for a specific project
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Task'
+            type: array
+      summary: Get all tasks by project
+      tags:
+      - tasks
+    post:
+      consumes:
+      - application/json
+      description: Create a task with name and description
+      parameters:
+      - description: Task JSON
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/models.Task'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Task'
+      summary: Create a new task
+      tags:
+      - tasks
+swagger: "2.0"
