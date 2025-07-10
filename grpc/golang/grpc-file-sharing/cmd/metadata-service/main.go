@@ -3,7 +3,6 @@ package main
 import (
     "log"
     "net"
-    "os"
 
     "gorm.io/driver/postgres"
     "gorm.io/gorm"
@@ -14,7 +13,7 @@ import (
 )
 
 func main() {
-    dsn := "host=localhost user=postgres password=secret dbname=metadata_db port=5432 sslmode=disable"
+    dsn := "host=172.17.0.2 user=postgres password=secret dbname=metadata_db port=5432 sslmode=disable"
     db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
     if err != nil {
         log.Fatalf("Failed to connect to DB: %v", err)

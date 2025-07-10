@@ -7,12 +7,10 @@ import (
     "os"
     "path/filepath"
     "time"
-    "log"
 
     filepb "github.com/JawherKl/grpc-file-sharing/proto/file"
     metapb "github.com/JawherKl/grpc-file-sharing/proto/metadata"
 
-    "google.golang.org/grpc"
 )
 
 type Server struct {
