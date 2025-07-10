@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package file;
+
+option go_package = "github.com/JawherKl/grpc-file-sharing/proto/file";
+
+service FileService {
+  rpc Upload(stream FileChunk) returns (UploadStatus);
+  rpc Download(FileRequest) returns (stream FileChunk);
+}
+
+message FileChunk {
+  bytes content = 1;
+  string filename = 2;
+  string user_id = 3;
+}
+
+message FileRequest {
+  string filename = 1;
+}
+
+message UploadStatus {
+  bool success = 1;
+  string message = 2;
+}
