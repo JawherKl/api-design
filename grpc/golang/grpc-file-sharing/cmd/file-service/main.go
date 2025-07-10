@@ -28,7 +28,7 @@ func main() {
     }
 
     grpcServer := grpc.NewServer()
-    RegisterFileServiceServer(grpcServer, &file.Server{
+    filepb.RegisterFileServiceServer(grpcServer, &file.Server{
         MetadataClient: metadataClient,
     })
 
