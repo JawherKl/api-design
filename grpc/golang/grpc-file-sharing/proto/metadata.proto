@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package metadata;
+
+option go_package = "github.com/JawherKl/grpc-file-sharing/proto/metadata";
+
+service MetadataService {
+  rpc SaveMetadata(FileMetadata) returns (SaveStatus);
+  rpc GetMetadata(FileRequest) returns (FileMetadata);
+  rpc ListFiles(UserRequest) returns (FileList);
+}
+
+message FileMetadata {
+  string id = 1;
+  string user_id = 2;
+  string filename = 3;
+  int64 size = 4;
+  string uploaded_at = 5;
+}
+
+message SaveStatus {
+  bool success = 1;
+  string message = 2;
+}
+
+message FileRequest {
+  string filename = 1;
+  string user_id = 2;
+}
+
+message UserRequest {
+  string user_id = 1;
+}
+
+message FileList {
+  repeated FileMetadata files = 1;
+}
