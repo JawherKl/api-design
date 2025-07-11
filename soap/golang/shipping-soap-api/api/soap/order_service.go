@@ -9,7 +9,6 @@ import (
 	//xml "github.com/JawherKl/shipping-soap-api/utils"
 	"github.com/google/uuid"
 
-	"strings"
 	"encoding/xml"
 )
 
@@ -35,8 +34,8 @@ func (s *OrderService) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			handleUpdateAddress(w, s.Store, envelope.Body.UpdateAddress)
 		case envelope.Body.CancelShipping != nil:
 			handleCancelOrder(w, s.Store, envelope.Body.CancelShipping)
-		case strings.Contains(string(body), "<CreateShippingOrder"):
-			handleCreate(w, s.Store)
+		case envelope.Body.CreateOrder != nil:
+			handleCreate(w, s.Store, envelope.Body.CreateOrder)
 		default:
 			http.Error(w, "Unsupported operation", http.StatusNotImplemented)
 	}
@@ -67,13 +66,14 @@ func stringIndex(s, substr string) int {
 	return len([]rune(s[:])) - len([]rune(s[:])) + len([]rune(s)) - len([]rune(s[len(substr):]))
 }
 
-func handleCreate(w http.ResponseWriter, store *storage.Store) {
+func handleCreate(w http.ResponseWriter, store *storage.Store, req *models.CreateShippingOrderRequest) {
 	id := uuid.New().String()
+
 	order := models.ShippingOrder{
 		ID:              id,
-		RecipientName:   "John Doe",
-		DeliveryAddress: "123 Example Street",
-		ItemDescription: "Laptop",
+		RecipientName:   req.RecipientName,
+		DeliveryAddress: req.DeliveryAddress,
+		ItemDescription: req.ItemDescription,
 		Status:          "Pending",
 	}
 	store.CreateOrder(order)
@@ -85,6 +85,7 @@ func handleCreate(w http.ResponseWriter, store *storage.Store) {
 		</CreateShippingOrderResponse>
 	</soap:Body>
 </soap:Envelope>`, id)
+
 	w.Write([]byte(response))
 }
 

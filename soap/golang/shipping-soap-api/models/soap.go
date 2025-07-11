@@ -8,9 +8,16 @@ type Envelope struct {
 }
 
 type Body struct {
-	GetStatus            *GetShippingStatusRequest     `xml:"GetShippingStatus,omitempty"`
-	UpdateAddress        *UpdateDeliveryAddressRequest `xml:"UpdateDeliveryAddress,omitempty"`
-	CancelShipping       *CancelShippingOrderRequest   `xml:"CancelShippingOrder,omitempty"`
+	CreateOrder        *CreateShippingOrderRequest    `xml:"CreateShippingOrder,omitempty"`
+	GetStatus          *GetShippingStatusRequest      `xml:"GetShippingStatus,omitempty"`
+	UpdateAddress      *UpdateDeliveryAddressRequest  `xml:"UpdateDeliveryAddress,omitempty"`
+	CancelShipping     *CancelShippingOrderRequest    `xml:"CancelShippingOrder,omitempty"`
+}
+
+type CreateShippingOrderRequest struct {
+	RecipientName    string `xml:"RecipientName"`
+	DeliveryAddress  string `xml:"DeliveryAddress"`
+	ItemDescription  string `xml:"ItemDescription"`
 }
 
 type GetShippingStatusRequest struct {
