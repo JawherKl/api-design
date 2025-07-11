@@ -13,6 +13,9 @@ func main() {
 
     r.HandleFunc("/ws", board.HandleWebSocket)
 	r.HandleFunc("/tasks", board.GetTasksHandler).Methods("GET")
+	r.HandleFunc("/tasks", board.CreateTaskHandler).Methods("POST")
+	r.HandleFunc("/tasks/{id}", board.UpdateTaskHandler).Methods("PUT")
+	r.HandleFunc("/tasks/{id}", board.DeleteTaskHandler).Methods("DELETE")
 
     srv := &http.Server{
         Addr:    ":8080",

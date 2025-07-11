@@ -33,3 +33,30 @@ func (s *TaskStore) All() []Task {
 	}
 	return tasks
 }
+
+func (s *TaskStore) Update(task Task) bool {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if _, exists := s.tasks[task.ID]; exists {
+		s.tasks[task.ID] = task
+		return true
+	}
+	return false
+}
+
+func (s *TaskStore) Delete(id string) bool {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if _, exists := s.tasks[id]; exists {
+		delete(s.tasks, id)
+		return true
+	}
+	return false
+}
+
+func (s *TaskStore) Get(id string) (Task, bool) {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	task, ok := s.tasks[id]
+	return task, ok
+}

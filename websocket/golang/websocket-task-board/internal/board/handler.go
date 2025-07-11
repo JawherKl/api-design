@@ -56,22 +56,44 @@ func readMessages(client *Client) {
 
 		log.Printf("Message from %s: %+v\n", client.ID, msg)
 
-		if msg.Type == "task_created" {
-			taskData := msg.Payload.(map[string]interface{})
-			task := Task{
-				ID:     uuid.NewString(),
-				Title:  taskData["title"].(string),
-				Status: taskData["status"].(string),
-			}
+		switch msg.Type {
+			case "task_created":
+				taskData := msg.Payload.(map[string]interface{})
+				task := Task{
+					ID:     uuid.NewString(),
+					Title:  taskData["title"].(string),
+					Status: taskData["status"].(string),
+				}
+				taskStore.Add(task)
 
-			// Save in-memory
-			taskStore.Add(task)
+				manager.Broadcast <- Message{
+					Type:    "task_created",
+					Payload: task,
+				}
 
-			// Broadcast to all
-			manager.Broadcast <- Message{
-				Type:    "task_created",
-				Payload: task,
-			}
+			case "task_updated":
+				taskData := msg.Payload.(map[string]interface{})
+				task := Task{
+					ID:     taskData["id"].(string),
+					Title:  taskData["title"].(string),
+					Status: taskData["status"].(string),
+				}
+				if taskStore.Update(task) {
+					manager.Broadcast <- Message{
+						Type:    "task_updated",
+						Payload: task,
+					}
+				}
+
+			case "task_deleted":
+				taskData := msg.Payload.(map[string]interface{})
+				id := taskData["id"].(string)
+				if taskStore.Delete(id) {
+					manager.Broadcast <- Message{
+						Type:    "task_deleted",
+						Payload: map[string]string{"id": id},
+					}
+				}
 		}
 	}
 }
