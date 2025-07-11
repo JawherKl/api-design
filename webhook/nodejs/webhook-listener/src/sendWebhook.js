@@ -33,5 +33,4 @@ async function sendWebhook() {
     }
 }
 
-// Run webhook test
 sendWebhook();

@@ -11,10 +11,10 @@ const EXCHANGE_API_URL = "https://api.exchangerate-api.com/v4/latest/USD";
 
 let exchangeRates = {};
 
-// 1️⃣ Connect to MongoDB
+// Connect to MongoDB
 connectDB();
 
-// 2️⃣ Fetch exchange rates
+// Fetch exchange rates
 const updateExchangeRates = async () => {
     try {
         console.log("Fetching latest exchange rates...");
@@ -29,7 +29,7 @@ const updateExchangeRates = async () => {
 updateExchangeRates();
 setInterval(updateExchangeRates, 60 * 60 * 1000); // Refresh every hour
 
-// 3️⃣ Define SOAP service
+// Define SOAP service
 const service = {
     CurrencyExchangeService: {
         CurrencyExchangePort: {
@@ -45,7 +45,7 @@ const service = {
 
                 console.log(`Converted ${amount} ${from} to ${convertedAmount.toFixed(2)} ${to}`);
 
-                // 4️⃣ Save transaction to MongoDB
+                // Save transaction to MongoDB
                 try {
                     const transaction = new Transaction({
                         from,
@@ -66,7 +66,7 @@ const service = {
     },
 };
 
-// 5️⃣ Load WSDL and start server
+// Load WSDL and start server
 const xml = fs.readFileSync("./wsdl/currency.wsdl", "utf8");
 
 const app = express();

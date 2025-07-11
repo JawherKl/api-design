@@ -5,5 +5,5 @@ type ShippingOrder struct {
 	RecipientName  string
 	DeliveryAddress string
 	ItemDescription string
-	Status         string // e.g. "Pending", "In Transit", "Delivered"
+	Status         string // "Pending", "In Transit", "Delivered"
 }

@@ -6,10 +6,11 @@ import (
 	"net/http"
 	"github.com/JawherKl/shipping-soap-api/models"
 	"github.com/JawherKl/shipping-soap-api/storage"
-	xml_helpers "github.com/JawherKl/shipping-soap-api/utils"
+	//xml "github.com/JawherKl/shipping-soap-api/utils"
 	"github.com/google/uuid"
 
 	"strings"
+	"encoding/xml"
 )
 
 type OrderService struct {
@@ -19,18 +20,23 @@ type OrderService struct {
 func (s *OrderService) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	body, _ := ioutil.ReadAll(r.Body)
 
-	xmlStr := string(body)
+	var envelope models.Envelope
+	if err := xml.Unmarshal(body, &envelope); err != nil {
+		http.Error(w, "Invalid XML", http.StatusBadRequest)
+		return
+	}
+
 	w.Header().Set("Content-Type", "text/xml")
 
 	switch {
-		case strings.Contains(xmlStr, "<CreateShippingOrder"):
+		case envelope.Body.GetStatus != nil:
+			handleGetStatus(w, s.Store, envelope.Body.GetStatus)
+		case envelope.Body.UpdateAddress != nil:
+			handleUpdateAddress(w, s.Store, envelope.Body.UpdateAddress)
+		case envelope.Body.CancelShipping != nil:
+			handleCancelOrder(w, s.Store, envelope.Body.CancelShipping)
+		case strings.Contains(string(body), "<CreateShippingOrder"):
 			handleCreate(w, s.Store)
-		case strings.Contains(xmlStr, "<GetShippingStatus"):
-			handleGetStatus(w, s.Store, xmlStr)
-		case strings.Contains(xmlStr, "<UpdateDeliveryAddress"):
-			handleUpdateAddress(w, s.Store, xmlStr)
-		case strings.Contains(xmlStr, "<CancelShippingOrder"):
-			handleCancelOrder(w, s.Store, xmlStr)
 		default:
 			http.Error(w, "Unsupported operation", http.StatusNotImplemented)
 	}
@@ -82,9 +88,8 @@ func handleCreate(w http.ResponseWriter, store *storage.Store) {
 	w.Write([]byte(response))
 }
 
-func handleGetStatus(w http.ResponseWriter, store *storage.Store, body string) {
-	id := xml_helpers.ExtractValue(body, "TrackingNumber")
-	order, exists := store.GetOrder(id)
+func handleGetStatus(w http.ResponseWriter, store *storage.Store, req *models.GetShippingStatusRequest) {
+	order, exists := store.GetOrder(req.TrackingNumber)
 	status := "NotFound"
 	if exists {
 		status = order.Status
@@ -99,16 +104,12 @@ func handleGetStatus(w http.ResponseWriter, store *storage.Store, body string) {
 	w.Write([]byte(response))
 }
 
-func handleUpdateAddress(w http.ResponseWriter, store *storage.Store, body string) {
-	id := xml_helpers.ExtractValue(body, "TrackingNumber")
-	newAddress := xml_helpers.ExtractValue(body, "NewAddress")
-	success := store.UpdateAddress(id, newAddress)
-
+func handleUpdateAddress(w http.ResponseWriter, store *storage.Store, req *models.UpdateDeliveryAddressRequest) {
+	success := store.UpdateAddress(req.TrackingNumber, req.NewAddress)
 	result := "Failed"
 	if success {
 		result = "Success"
 	}
-
 	response := fmt.Sprintf(`<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 	<soap:Body>
 		<UpdateDeliveryAddressResponse>
@@ -119,15 +120,12 @@ func handleUpdateAddress(w http.ResponseWriter, store *storage.Store, body strin
 	w.Write([]byte(response))
 }
 
-func handleCancelOrder(w http.ResponseWriter, store *storage.Store, body string) {
-	id := xml_helpers.ExtractValue(body, "TrackingNumber")
-	success := store.CancelOrder(id)
-
+func handleCancelOrder(w http.ResponseWriter, store *storage.Store, req *models.CancelShippingOrderRequest) {
+	success := store.CancelOrder(req.TrackingNumber)
 	result := "Failed"
 	if success {
 		result = "Success"
 	}
-
 	response := fmt.Sprintf(`<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 	<soap:Body>
 		<CancelShippingOrderResponse>
