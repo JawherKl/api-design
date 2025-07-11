@@ -1,117 +1,192 @@
-## ✅ **"EventBridge Webhook Gateway"**
+# 🚀 Go Webhook Gateway
 
-A generic Webhook Gateway that receives webhooks from different external services (like GitHub, Stripe, or Twilio) and routes them to appropriate internal services or logs them for analytics.
-
-This mirrors real-world systems in SaaS, e-commerce, DevOps, or notification platforms.
+A secure and extensible **Webhook Gateway** written in Go to receive and validate webhooks from external services like **GitHub**, **Stripe**, and **Twilio**, with MongoDB-based logging and modular processing support.
 
 ---
 
-### 📦 Project Name: `go-webhook-gateway`
+## 📌 Features
+
+- ✅ Webhook receiver with dynamic source routes
+- 🔐 Signature verification:
+  - GitHub (HMAC-SHA256)
+  - Stripe (HMAC-SHA256 with timestamp)
+  - Twilio (HMAC-SHA1 with URL + form data)
+- 🗃️ Event logging into MongoDB
+- ⚙️ Extensible architecture for routing events to custom processors (Slack, Email, etc.)
+- 🐳 Dockerized MongoDB for isolated development
+- 🌱 Minimal dependencies with `Gin` and native Go libraries
 
 ---
 
-## 🔧 Key Features to Implement
+## 🛠️ Tech Stack
 
-### 1. **Webhook Endpoint Handler**
-
-* Accepts POST requests at `/webhook/:source` (e.g., `/webhook/github`, `/webhook/stripe`)
-* Verifies signature/token from each provider
-* Parses and logs the payload
-* Sends the payload to a processing queue or internal service via HTTP or gRPC
-
-### 2. **Source-Specific Verifiers**
-
-* GitHub: Validate `X-Hub-Signature-256`
-* Stripe: Validate with endpoint secret
-* Twilio: Validate their signature with auth token
-
-### 3. **Event Router**
-
-* Based on event type, route to:
-  * Email service
-  * Slack notifier
-  * DB logger
-  * Custom microservice endpoint
-
-### 4. **Persistence Layer**
-
-* Log all webhook calls to PostgreSQL or MongoDB:
-
-  * `id`, `source`, `event_type`, `timestamp`, `status`, `payload`
-
-### 5. **Dashboard API**
-
-* Endpoint to list all webhook events (`GET /api/events`)
-* Filter by source, event type, date
-* Pagination and error logs
-
-### 6. **Security**
-
-* HMAC signature validation
-* Rate limiting (e.g., using `golang.org/x/time/rate`)
-* Optional token auth for internal services
-
-### 7. **Testing**
-
-* Unit tests for each provider parser and signature validator
-* Integration tests for event routing
+| Layer     | Tech                          |
+|-----------|-------------------------------|
+| Language  | Go                            |
+| Web       | [Gin](https://github.com/gin-gonic/gin)  |
+| DB        | MongoDB (Docker container)    |
+| Logging   | `log`                         |
+| Security  | HMAC Signature Verifiers      |
+| Tools     | `curl`, `ngrok`, `docker`     |
 
 ---
 
-## 🛠 Tech Stack
-
-| Layer            | Tech                                          |
-| ---------------- | --------------------------------------------- |
-| Language         | Go (Golang)                                   |
-| Web Framework    | `net/http` or `Gin`                           |
-| Queue (Optional) | Redis, NATS, or RabbitMQ for async processing |
-| DB               | PostgreSQL or MongoDB                         |
-| Logging          | `logrus` or `zap`                             |
-| Testing          | `testing`, `httptest`, `stretchr/testify`     |
-| Docker           | Docker + docker-compose setup for local dev   |
-| Docs             | Swagger with `swaggo/swag`                    |
-
----
-
-## 📁 Suggested Folder Structure
+## 📁 Project Structure
 
 ```
+
 go-webhook-gateway/
 │
-├── cmd/
+├── cmd/                  # Main entry point
 │   └── main.go
-├── config/
-│   └── config.go
+├── config/               # (optional future: app config)
 ├── internal/
-│   ├── handler/          # HTTP Handlers
-│   ├── verifier/         # Signature validators per provider
-│   ├── router/           # Routes
-│   ├── processor/        # Event processors
-│   └── storage/          # DB interactions
-├── models/
-│   └── event.go
-├── test/
-│   └── handler_test.go
+│   ├── handler/          # Webhook handler
+│   ├── router/           # Route definitions
+│   ├── storage/          # MongoDB connector
+│   └── verifier/         # GitHub, Stripe, Twilio verifiers
+├── models/               # Event struct model
+├── test/                 # Unit tests (future)
+├── .env                  # Config file (non-committed)
 ├── go.mod
-├── docker-compose.yml
 └── README.md
+
+````
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone & Install Dependencies
+
+```bash
+git clone https://github.com/JawherKl/go-webhook-gateway.git
+cd go-webhook-gateway
+go mod tidy
+````
+
+---
+
+### 2. Run MongoDB in Docker
+
+```bash
+docker run -d \
+  --name webhook-mongo \
+  -p 27017:27017 \
+  -v webhook-mongo-data:/data/db \
+  -e MONGO_INITDB_DATABASE=webhooks \
+  mongo:7
 ```
 
 ---
 
-## 📘 Example Use Case
+### 3. Setup `.env` Configuration
 
-1. A GitHub repo sends a push event to `/webhook/github`
-2. Your app validates the HMAC signature
-3. It logs the event and forwards it to a Slack notification service
-4. Also stores payload in PostgreSQL
+```env
+PORT=8080
+MONGO_URI=mongodb://localhost:27017
+GITHUB_WEBHOOK_SECRET=yourgithubsecret
+STRIPE_WEBHOOK_SECRET=yourstripesecret
+TWILIO_AUTH_TOKEN=yourtwiliotoken
+```
 
 ---
 
-## 🧠 Bonus Features (Future Enhancements)
+### 4. Run the Gateway
 
-* Retry logic with exponential backoff
-* Dead-letter queue for failed events
-* Rate limiting per source
-* Web UI to monitor received webhooks
-* Webhook subscription system (SaaS-like)
+```bash
+go run cmd/main.go
+```
+
+Now the gateway listens on:
+📬 `http://localhost:8080/webhook/:source`
+
+---
+
+## 🧪 Testing Webhooks
+
+### ✅ GitHub Webhook Test (HMAC-SHA256)
+
+```bash
+payload='{"event":"push"}'
+sig='sha256='$(echo -n $payload | openssl dgst -sha256 -hmac yourgithubsecret | sed 's/^.* //')
+
+curl -X POST http://localhost:8080/webhook/github \
+  -H "Content-Type: application/json" \
+  -H "X-Hub-Signature-256: $sig" \
+  -d "$payload"
+```
+
+---
+
+### ✅ Stripe Webhook Test (HMAC-SHA256 + timestamp)
+
+```bash
+payload='{"id":"evt_test","type":"payment_intent.succeeded"}'
+ts=$(date +%s)
+sig='v1='$(echo -n "$ts.$payload" | openssl dgst -sha256 -hmac yourstripesecret | sed 's/^.* //')
+
+curl -X POST http://localhost:8080/webhook/stripe \
+  -H "Content-Type: application/json" \
+  -H "Stripe-Signature: t=$ts,$sig" \
+  -d "$payload"
+```
+
+---
+
+### ✅ Twilio Webhook Test (HMAC-SHA1 + form-encoded)
+
+Twilio signatures require the full request URL and form fields sorted. Best tested with **ngrok** + actual Twilio event.
+
+---
+
+## 📦 MongoDB Webhook Storage
+
+Each verified event is stored in MongoDB:
+
+```json
+{
+  "source": "stripe",
+  "received_at": "2025-07-11T10:42:00Z",
+  "headers": {
+    "Stripe-Signature": "t=...,v1=..."
+  },
+  "payload": {
+    "id": "evt_test",
+    "type": "payment_intent.succeeded"
+  }
+}
+```
+
+---
+
+## 🧩 Roadmap
+
+* [x] GitHub webhook support
+* [x] Stripe webhook support
+* [x] Twilio webhook support
+* [x] MongoDB event logging
+* [ ] Add event processor system (Slack, Email, etc.)
+* [ ] Add filters and search API
+* [ ] Add Swagger documentation
+* [ ] Add integration tests
+
+---
+
+## 📄 License
+
+[MIT](LICENSE)
+
+---
+
+## 🙌 Acknowledgements
+
+* [GitHub Webhook Docs](https://docs.github.com/en/webhooks)
+* [Stripe Webhook Docs](https://stripe.com/docs/webhooks)
+* [Twilio Webhook Docs](https://www.twilio.com/docs/usage/webhooks)
+
+---
+
+## 💡 Author
+
+Made with ❤️ by [@JawherKl](https://github.com/JawherKl)

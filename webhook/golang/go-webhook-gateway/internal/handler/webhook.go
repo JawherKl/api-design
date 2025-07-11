@@ -61,9 +61,6 @@ func HandleWebhook(c *gin.Context) {
 	log.Printf("📦 Webhook received from %s: %+v\n", source, payload)
 	c.JSON(http.StatusOK, gin.H{"status": "received", "source": source})
 
-
-
-	// Log the webhook event
 	headers := make(map[string]string)
 	for k, v := range c.Request.Header {
 		headers[k] = v[0]
