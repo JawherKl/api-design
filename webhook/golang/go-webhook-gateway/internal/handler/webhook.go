@@ -6,6 +6,9 @@ import (
 	"log"
 	"net/http"
 	"io"
+	"github.com/JawherKl/go-webhook-gateway/models"
+	"time"
+	"github.com/JawherKl/go-webhook-gateway/internal/storage"
 )
 
 func HandleWebhook(c *gin.Context) {
@@ -57,6 +60,28 @@ func HandleWebhook(c *gin.Context) {
 
 	log.Printf("📦 Webhook received from %s: %+v\n", source, payload)
 	c.JSON(http.StatusOK, gin.H{"status": "received", "source": source})
+
+
+
+	// Log the webhook event
+	headers := make(map[string]string)
+	for k, v := range c.Request.Header {
+		headers[k] = v[0]
+	}
+
+	event := models.WebhookEvent{
+		Source:     source,
+		ReceivedAt: time.Now(),
+		Headers:    headers,
+		Payload:    payload,
+	}
+
+	collection := storage.GetCollection("events")
+	if _, err := collection.InsertOne(c, event); err != nil {
+		log.Println("❌ Failed to store event:", err)
+	}
+
+	log.Printf("📦 Webhook stored from %s\n", source)
 }
 
 type ResetReader struct {

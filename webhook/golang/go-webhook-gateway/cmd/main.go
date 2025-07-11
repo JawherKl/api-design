@@ -1,19 +1,19 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"log"
 	"os"
 
+	"github.com/gin-gonic/gin"
 	"github.com/JawherKl/go-webhook-gateway/internal/router"
+	"github.com/JawherKl/go-webhook-gateway/internal/storage"
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Println("No .env file found, continuing...")
-	}
+	_ = godotenv.Load()
+
+	storage.InitMongo() // ✅ init DB
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -21,7 +21,6 @@ func main() {
 	}
 
 	r := gin.Default()
-
 	router.SetupRoutes(r)
 
 	log.Printf("🚀 Webhook Gateway running on port %s\n", port)
