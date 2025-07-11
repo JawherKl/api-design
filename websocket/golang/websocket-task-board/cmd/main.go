@@ -12,6 +12,7 @@ func main() {
     r := mux.NewRouter()
 
     r.HandleFunc("/ws", board.HandleWebSocket)
+	r.HandleFunc("/tasks", board.GetTasksHandler).Methods("GET")
 
     srv := &http.Server{
         Addr:    ":8080",

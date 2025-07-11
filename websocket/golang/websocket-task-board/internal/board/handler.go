@@ -56,7 +56,6 @@ func readMessages(client *Client) {
 
 		log.Printf("Message from %s: %+v\n", client.ID, msg)
 
-		// Add timestamp or server-side task ID if needed
 		if msg.Type == "task_created" {
 			taskData := msg.Payload.(map[string]interface{})
 			task := Task{
@@ -64,6 +63,11 @@ func readMessages(client *Client) {
 				Title:  taskData["title"].(string),
 				Status: taskData["status"].(string),
 			}
+
+			// Save in-memory
+			taskStore.Add(task)
+
+			// Broadcast to all
 			manager.Broadcast <- Message{
 				Type:    "task_created",
 				Payload: task,
