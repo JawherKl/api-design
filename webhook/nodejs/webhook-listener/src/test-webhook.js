@@ -4,7 +4,6 @@ const crypto = require('crypto');
 const secret = 'your-secret-key';
 const payload = { message: "Automated Webhook Test" };
 
-// Ensure consistent JSON formatting
 const payloadString = JSON.stringify(payload);  
 
 const signature = crypto.createHmac('sha256', secret)

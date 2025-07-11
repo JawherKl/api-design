@@ -9,7 +9,6 @@ module.exports = (req, res, next) => {
         return res.status(403).json({ error: 'Signature missing' });
     }
 
-    // Ensure consistent JSON formatting in the verification process
     const payloadString = JSON.stringify(req.body, null, 0);
 
     const computedHash = crypto.createHmac('sha256', secret)
